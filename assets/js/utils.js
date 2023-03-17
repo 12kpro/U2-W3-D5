@@ -6,7 +6,7 @@ const resp = async (url, method = "GET", body = false) => {
   const params = {
     method,
     headers: {
-      Authorization: AUHT_KEY
+      //Authorization: AUHT_KEY
     }
   };
 
@@ -14,14 +14,18 @@ const resp = async (url, method = "GET", body = false) => {
     params.headers["Content-Type"] = "application/json";
     params.body = JSON.stringify(body);
   }
-
   try {
     const response = await fetch(url, params);
-    const data = await response.json();
 
+    console.log(response);
     if (!response.ok) {
+      if (response.status === 401) throw new Error({ status: response.status, msg: response.statusText });
+      if (response.status === 400) throw new Error({ status: response.status, msg: response.statusText });
+      if (response.status === 404) throw new Error({ status: response.status, msg: response.statusText });
       throw new Error("Network response was not OK");
     }
+
+    const data = await response.json();
     return data;
   } catch (error) {
     console.log(error);
@@ -30,6 +34,16 @@ const resp = async (url, method = "GET", body = false) => {
     loader.classList.add("invisible");
   }
 };
+
+const toastTpl = (code, msg) => `
+  <div class="toast text-bg-danger bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">${code}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">${msg}</div>
+  </div>
+`;
 
 const cardTpl = (id, img, name, brand, description, price) => `
     <div class="col">
