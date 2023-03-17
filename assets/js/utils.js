@@ -52,8 +52,8 @@ const cardTpl = (id, img, name, brand, description, price) => `
           <p class="card-text">${description}</p>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-              <a href="./details.html?id=${id}" class="btn btn-sm btn-outline-secondary">View</a>
-              <a href="./backoffice.html?id=${id}" class="btn btn-sm btn-outline-secondary">Edit</a>
+              <a href="./details.html?id=${id}" class="btn btn-sm btn-outline-secondary">Scopri di più</a>
+              <a href="./backoffice.html?id=${id}" class="btn btn-sm btn-outline-secondary">Modifica</a>
             </div>
             <small class="text-muted">${price}€</small>
           </div>

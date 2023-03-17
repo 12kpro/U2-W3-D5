@@ -27,10 +27,12 @@ document.addEventListener("DOMContentLoaded", async (e) => {
   }
 
   btnDelete.addEventListener("click", (e) => {
-    resp(url, "DELETE");
+    const proceed = confirm("Sicuro di voler eliminare l'articolo?");
+    if (proceed) resp(url, "DELETE").then(window.location.assign("./index.html"));
   });
   btnReset.addEventListener("click", (e) => {
-    formProduct.reset();
+    const proceed = confirm("Sicuro di voler cancellare i dati inseriti");
+    if (proceed) formProduct.reset();
   });
 
   formProduct.addEventListener("submit", (e) => {

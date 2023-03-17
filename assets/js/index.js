@@ -10,5 +10,7 @@ const loadArticless = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", (e) => {
-  loadArticless();
+  setTimeout(() => {
+    loadArticless();
+  }, 2000);
 });
