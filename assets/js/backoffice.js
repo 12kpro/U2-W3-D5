@@ -49,9 +49,9 @@ document.addEventListener("DOMContentLoaded", async (e) => {
       };
 
       if (productId) {
-        resp(url, "PUT", msgBody);
+        resp(url, "PUT", JSON.stringify(msgBody));
       } else {
-        resp(BASE_URL, "POST", msgBody);
+        resp(BASE_URL, "POST", JSON.stringify(msgBody));
       }
     }
   });

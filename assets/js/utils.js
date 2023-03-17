@@ -2,40 +2,50 @@ const BASE_URL = "https://striveschool-api.herokuapp.com/api/product/";
 const AUHT_KEY =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDEzYjZhZGM1NmIzNjAwMTMzZmU1NzAiLCJpYXQiOjE2NzkwMTM1NDksImV4cCI6MTY4MDIyMzE0OX0.gh0JCLPZVXRqvfKOawV7S1-YNSH44zJ48CyW3Vv0mkc";
 
-const resp = async (url, method = "GET", body = false) => {
+class ServerError extends Error {
+  constructor(status, statusMsg) {
+    super();
+    this.status = status;
+    this.statusMsg = statusMsg;
+  }
+}
+
+const showToast = (apearence, title, msg) => {
+  const toastBs = document.getElementById("toast");
+  toastBs.classList.add(apearence);
+  const toasStatus = toastBs.querySelector("#toast_status");
+  const toastMsg = toastBs.querySelector("#toast_status_msg");
+
+  toasStatus.innerText = title;
+  toastMsg.innerText = msg;
+
+  const toast = new bootstrap.Toast(toastBs);
+  toast.show();
+};
+
+const resp = async (url, method, body) => {
   const params = {
     method,
     headers: {
       Authorization: AUHT_KEY
-    }
+    },
+    body
   };
 
   if (method === "POST" || method === "PUT") {
     params.headers["Content-Type"] = "application/json";
-    params.body = JSON.stringify(body);
   }
+
   try {
     const response = await fetch(url, params);
-
     console.log(response);
-    if (!response.ok) {
-      if (response.status === 401) throw new Error("Network response was not OK, Status 401");
-      if (response.status === 400) throw new Error("Network response was not OK, Status 400");
-      if (response.status === 404) throw new Error("Network response was not OK, Status 404");
-      throw new Error("Network response was not OK");
+    if (response.ok) {
+      const data = await response.json();
+      return data;
     }
-
-    const data = await response.json();
-    return data;
+    throw new ServerError(response.status, response.statusText);
   } catch (error) {
-    const toastMsg = document.getElementById("toast_msg");
-    toastMsg.innerText = error;
-
-    const toastBs = document.getElementById("liveToast");
-    const toast = new bootstrap.Toast(toastBs);
-    toast.show();
-
-    console.dir(error.message);
+    showToast("text-bg-danger", error.status, error.statusMsg);
   } finally {
     const loader = document.getElementById("loader");
     loader.classList.add("invisible");
