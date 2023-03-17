@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script src="assets/js/utils.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid px-5">
+        <a class="navbar-brand d-flex" href="./index.html">
+          <div id="loader" class="spinner-grow text-success me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          CRUDAZON
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto d-flex flex-grow-1 mb-2 mb-lg-0">
+            <li class="nav-item me-auto">
+              <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./backoffice.html">Backoffice</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <h2 class="d-inline-block">Backoffice</h2>
+          <h5 id="subtitle" class="d-inline-block">Crea nuovo articolo</h5>
+          <div class="spinner-border text-info float-end d-none" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <hr class="border-secondary" />
+          <form id="form_product" class="mt-4" novalidate>
+            <div class="mb-3">
+              <label for="brand" class="form-label">Marca</label>
+              <input
+                type="text"
+                class="form-control"
+                id="brand"
+                placeholder="Inserisci un nome"
+                aria-describedby="brand"
+                required
+              />
+              <div class="invalid-feedback">Inserisci la marca.</div>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Modello</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Inserisci un nome"
+                aria-describedby="name"
+                required
+              />
+              <div class="invalid-feedback">Inserisci il modello</div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Descrizione</label>
+              <textarea
+                class="form-control"
+                id="description"
+                aria-describedby="description"
+                placeholder="Inserisci una descrizione"
+                row="4"
+                required
+              ></textarea>
+              <div class="invalid-feedback">Inserisci la descrizione.</div>
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Prezzo</label>
+              <input type="number" class="form-control" id="price" aria-describedby="price" placeholder="1€" required />
+              <div class="invalid-feedback">Inserisci il prezzo.</div>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">URL immagine</label>
+              <input
+                type="text"
+                class="form-control"
+                id="image"
+                aria-describedby="time"
+                placeholder="http://"
+                required
+              />
+              <div class="invalid-feedback">Inserisci URL immagine.</div>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="btn_reset" type="button" class="btn btn-outline-secondary">Cancel</button>
+              <button id="btn_submit" type="submit" class="btn btn-primary me-auto">Submit</button>
+              <button id="btn_delete" type="button" class="btn btn-danger d-none">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <script src="assets/js/backoffice.js"></script>
+  </body>
+</html>
