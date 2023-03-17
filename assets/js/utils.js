@@ -6,7 +6,7 @@ const resp = async (url, method = "GET", body = false) => {
   const params = {
     method,
     headers: {
-      //Authorization: AUHT_KEY
+      Authorization: AUHT_KEY
     }
   };
 
@@ -19,31 +19,28 @@ const resp = async (url, method = "GET", body = false) => {
 
     console.log(response);
     if (!response.ok) {
-      if (response.status === 401) throw new Error({ status: response.status, msg: response.statusText });
-      if (response.status === 400) throw new Error({ status: response.status, msg: response.statusText });
-      if (response.status === 404) throw new Error({ status: response.status, msg: response.statusText });
+      if (response.status === 401) throw new Error("Network response was not OK, Status 401");
+      if (response.status === 400) throw new Error("Network response was not OK, Status 400");
+      if (response.status === 404) throw new Error("Network response was not OK, Status 404");
       throw new Error("Network response was not OK");
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    const toastMsg = document.getElementById("toast_msg");
+    toastMsg.innerText = error;
+
+    const toastBs = document.getElementById("liveToast");
+    const toast = new bootstrap.Toast(toastBs);
+    toast.show();
+
+    console.dir(error.message);
   } finally {
     const loader = document.getElementById("loader");
     loader.classList.add("invisible");
   }
 };
-
-const toastTpl = (code, msg) => `
-  <div class="toast text-bg-danger bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <strong class="me-auto">${code}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">${msg}</div>
-  </div>
-`;
 
 const cardTpl = (id, img, name, brand, description, price) => `
     <div class="col">
