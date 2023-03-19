@@ -2,10 +2,15 @@ const URLParams = new URLSearchParams(window.location.search);
 const productId = URLParams.get("id");
 const url = `${BASE_URL}${productId}`;
 
+const startLoader = () => {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("invisible");
+  loader.classList.add("visible");
+};
 document.addEventListener("DOMContentLoaded", async (e) => {
   const btnDelete = document.getElementById("btn_delete");
-  const btnReset = document.getElementById("btn_reset");
   const btnSubmit = document.getElementById("btn_submit");
+
   const formProduct = document.getElementById("form_product");
   const nameField = document.getElementById("name");
   const descriptionField = document.getElementById("description");
@@ -13,9 +18,13 @@ document.addEventListener("DOMContentLoaded", async (e) => {
   const brandField = document.getElementById("brand");
   const imageField = document.getElementById("image");
 
+  const modal = document.getElementById("modal_warning");
+  const btnConfirm = document.getElementById("btn_confirm");
+
   if (productId) {
+    startLoader();
     btnDelete.classList.remove("d-none");
-    btnReset.classList.add("d-none");
+    //btnReset.classList.add("d-none");
     btnSubmit.innerText = "Save";
     const product = await resp(url);
     const { brand, description, imageUrl, name, price } = product;
@@ -26,13 +35,23 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     imageField.value = imageUrl;
   }
 
-  btnDelete.addEventListener("click", (e) => {
-    const proceed = confirm("Sicuro di voler eliminare l'articolo?");
-    if (proceed) resp(url, "DELETE").then(window.location.assign("./index.html"));
+  modal.addEventListener("show.bs.modal", (event) => {
+    const action = event.relatedTarget.dataset.action;
+    const msg =
+      action === "delete"
+        ? "Are you sure you want to delete the article?"
+        : "Are you sure you want to delete the entered data?";
+
+    const modalBody = modal.querySelector("#modal_body");
+    const btnConfirm = modal.querySelector("#btn_confirm");
+    modalBody.innerText = msg;
+    btnConfirm.dataset.action = action;
   });
-  btnReset.addEventListener("click", (e) => {
-    const proceed = confirm("Sicuro di voler cancellare i dati inseriti");
-    if (proceed) formProduct.reset();
+
+  btnConfirm.addEventListener("click", (e) => {
+    startLoader();
+    const action = e.target.dataset.action;
+    action === "delete" ? resp(url, "DELETE", true).then(window.location.assign("./index.html")) : formProduct.reset();
   });
 
   formProduct.addEventListener("submit", (e) => {
@@ -40,6 +59,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
 
     e.target.classList.add("was-validated");
     if (e.target.checkValidity()) {
+      startLoader();
       const msgBody = {
         name: nameField.value,
         description: descriptionField.value,
@@ -49,9 +69,9 @@ document.addEventListener("DOMContentLoaded", async (e) => {
       };
 
       if (productId) {
-        resp(url, "PUT", JSON.stringify(msgBody));
+        resp(url, "PUT", true, JSON.stringify(msgBody));
       } else {
-        resp(BASE_URL, "POST", JSON.stringify(msgBody));
+        resp(BASE_URL, "POST", true, JSON.stringify(msgBody));
       }
     }
   });
