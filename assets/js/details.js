@@ -2,6 +2,7 @@ const URLParams = new URLSearchParams(window.location.search);
 const productId = URLParams.get("id");
 const url = `${BASE_URL}${productId}`;
 
+//creo la pagina dettagli sulla base dei dati proveenienti dal server
 document.addEventListener("DOMContentLoaded", async (e) => {
   const product = await resp(url);
   const { _id, brand, description, imageUrl, name, price, createdAt } = product;

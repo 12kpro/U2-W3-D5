@@ -2,6 +2,7 @@ const URLParams = new URLSearchParams(window.location.search);
 const productId = URLParams.get("id");
 const url = `${BASE_URL}${productId}`;
 
+// gestisco la visibilità del loader
 const startLoader = () => {
   const loader = document.getElementById("loader");
   loader.classList.remove("invisible");
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
   const modal = document.getElementById("modal_warning");
   const btnConfirm = document.getElementById("btn_confirm");
 
+  // se sono in modifica popolo il form con i dati provenienti dalla fetch
   if (productId) {
     startLoader();
     btnDelete.classList.remove("d-none");
@@ -34,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     brandField.value = brand;
     imageField.value = imageUrl;
   }
-
+  //gestisco il contenuto e l'azione della modal
   modal.addEventListener("show.bs.modal", (event) => {
     const action = event.relatedTarget.dataset.action;
     const msg =
@@ -48,12 +50,13 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     btnConfirm.dataset.action = action;
   });
 
+  //gestisco la rimozione di un articolo
   btnConfirm.addEventListener("click", (e) => {
     startLoader();
     const action = e.target.dataset.action;
     action === "delete" ? resp(url, "DELETE", true).then(window.location.assign("./index.html")) : formProduct.reset();
   });
-
+  //gestisco la modifica o il salvataggio di un articolo
   formProduct.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -69,9 +72,9 @@ document.addEventListener("DOMContentLoaded", async (e) => {
       };
 
       if (productId) {
-        resp(url, "PUT", true, JSON.stringify(msgBody));
+        resp(url, "PUT", true, JSON.stringify(msgBody)); // modifica
       } else {
-        resp(BASE_URL, "POST", true, JSON.stringify(msgBody));
+        resp(BASE_URL, "POST", true, JSON.stringify(msgBody)); //inserimento
       }
     }
   });
